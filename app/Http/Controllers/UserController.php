@@ -7,7 +7,7 @@ use App\Models\User;
 Class UserController extends Controller {
     private $request;
     public function __construct(Request $request){
- $this->request = $request;
+        $this->request = $request;
  }
     public function getUsers(){
         $users = User::all();
