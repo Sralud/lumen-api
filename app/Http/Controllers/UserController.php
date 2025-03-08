@@ -77,4 +77,16 @@ Class UserController extends Controller {
         $user->save();
         return $this->successResponse($user);
     }
+
+    public function delete($id)
+    {
+        $user = User::find($id);
+
+        if (!$user) {
+            return $this->errorResponse('User ID does not exist', Response::HTTP_NOT_FOUND);
+        }
+
+        $user->delete();
+        return $this->successResponse(['message' => 'User deleted successfully']);
+    }
 }
