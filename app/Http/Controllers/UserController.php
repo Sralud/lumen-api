@@ -21,9 +21,36 @@ Class UserController extends Controller {
     protected function errorResponse($message, $code){
         return response()->json(['error' => $message, 'code' => $code], $code);
     }
-    
+
+    public function index(){
+        $users = User::all();
+        return $this->successResponse($users);
+    }
+
     public function getUsers(){
         $users = User::all();
-        return response()->json($users, 200);
+        return $this->successResponse($users);
+    }
+
+    public function add(Request $request){
+        $rules = [
+            'username' => 'required|max:20',
+            'password' => 'required|max:20',
+            'gender' => 'required|in:Male,Female,Other',
+        ];
+        
+        $this->validate($request, $rules);
+        $user = User::create($request->all());
+        return $this->successResponse($user, Response::HTTP_CREATED);
+    }
+
+    public function show($id){
+        $user = User::find($id);
+
+        if (!$user) {
+            return $this->errorResponse('User ID does not exist', Response::HTTP_NOT_FOUND);
+        }
+
+        return $this->successResponse($user);
     }
 }
