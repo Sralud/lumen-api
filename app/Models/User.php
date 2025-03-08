@@ -9,4 +9,6 @@
         protected $fillable = [
             'username', 'password'
         ];
+        public $timestamps = false;
+        protected $primaryKey = 'id';
  }
