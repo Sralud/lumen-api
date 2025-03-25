@@ -55,12 +55,12 @@ class Handler extends ExceptionHandler
     public function render($request, Throwable $exception)
     {
         // http not found
-        //if ($exception instanceof HttpException) {
-        //    $code = $exception->getStatusCode();
-        //    $messsage = Response::$statusTexts[$code];
+        if ($exception instanceof HttpException) {
+            $code = $exception->getStatusCode();
+            $messsage = Response::$statusTexts[$code];
 
-        //    return $this->errorResponse($messsage, $code);
-        //}
+            return $this->errorResponse($messsage, $code);
+        }
         //instance not found
         //if ()
 
