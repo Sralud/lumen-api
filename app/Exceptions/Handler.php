@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Validation\ValidationException;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
@@ -74,6 +75,18 @@ class Handler extends ExceptionHandler
 
             return $this->errorResponse($errors, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
+
+        //access to forbidden
+        if ($exception instanceof AuthorizationException) {
+            return $this->errorResponse($exception->getMessage(), Response::HTTP_FORBIDDEN);
+        }
+
+        //unauthorized access
+        if ($exception instanceof AuthenticationException) {
+            return $this->errorResponse($exception->getMessage(), Response::HTTP_UNAUTHORIZED);
+        }
+
+
 
         return parent::render($request, $exception);
     }
