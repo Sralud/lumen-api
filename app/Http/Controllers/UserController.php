@@ -45,11 +45,11 @@ Class UserController extends Controller {
     }
 
     public function show($id){
-        $user = User::find($id);
+        $user = User::findOrFail($id);
 
-        if (!$user) {
+        /*if (!$user) {
             return $this->errorResponse('User ID does not exist', Response::HTTP_NOT_FOUND);
-        }
+        }*/
 
         return $this->successResponse($user);
     }
@@ -62,14 +62,14 @@ Class UserController extends Controller {
         ];
 
         $this->validate($request, $rules);
-        $user = User::find($id);
+        $user = User::findOrFail($id);
 
-        if (!$user) {
+        /*if (!$user) {
             return $this->errorResponse('User ID does not exist', Response::HTTP_NOT_FOUND);
-        }
+        }*/
 
         $user->fill($request->all());
-
+        //if no changes happen
         if ($user->isClean()) {
             return $this->errorResponse('At least one value must change', Response::HTTP_UNPROCESSABLE_ENTITY);
         }
@@ -80,13 +80,10 @@ Class UserController extends Controller {
 
     public function delete($id)
     {
-        $user = User::find($id);
-
-        if (!$user) {
-            return $this->errorResponse('User ID does not exist', Response::HTTP_NOT_FOUND);
-        }
-
+        $user = User::findOrFail($id);
         $user->delete();
-        return $this->successResponse(['message' => 'User deleted successfully']);
+        return $this->errorResponse('User ID does not exist', Response::HTTP_NOT_FOUND);
+
+        //return $this->successResponse(['message' => 'User deleted successfully']);
     }
 }
