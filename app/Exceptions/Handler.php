@@ -62,7 +62,18 @@ class Handler extends ExceptionHandler
             return $this->errorResponse($messsage, $code);
         }
         //instance not found
-        //if ()
+        if ($exception instanceof ModelNotFoundException) {
+            $model = strtolower(class_basename($exception->getModel()));
+
+            return $this->errorResponse("Does not exist any instance of {$model} with the given id", Response::HTTP_NOT_FOUND);
+        }
+
+        //validation exception
+        if ($exception instanceof ValidationException) {
+            $errors = $exception->validator->errors()->getMessages();
+
+            return $this->errorResponse($errors, Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
 
         return parent::render($request, $exception);
     }
