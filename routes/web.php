@@ -1,29 +1,35 @@
 <?php
 
-/** @var \Laravel\Lumen\Routing\Router $router /
-
-/
-|--------------------------------------------------------------------------
-| Application Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register all of the routes for an application.
-| It is a breeze. Simply tell Lumen the URIs it should respond to
-| and give it the Closure to call when that URI is requested.
-|
-*/
+/** @var \Laravel\Lumen\Routing\Router $router */
 
 $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
+// Unsecured Routes
 $router->group(['prefix' => 'api'], function () use ($router) {
-    $router->get('/users',['uses' => 'UserController@getUsers']);
+    $router->get('/users', 'UserController@index'); // Get all users
+    $router->get('/users/{id}', 'UserController@show'); // Get user by ID
+    $router->post('/users', 'UserController@add'); // Create a new user
+    $router->put('/users/{id}', 'UserController@update'); // Update user
+    $router->patch('/users/{id}', 'UserController@update'); // Partial update
+    $router->delete('/users/{id}', 'UserController@delete'); // Delete user
+
+
+    $router->get('/usersjob', 'UserJobController@index');
+    $router->get('/usersjob/{id}', 'UserJobController@show');
+
 });
 
-$router->get('/users', 'UserController@index'); // get all users records
-$router->post('/users', 'UserController@add'); // create new user record
-$router->get('/users/{id}', 'UserController@show'); // get user by id
-$router->put('/users/{id}', 'UserController@update'); // update user record
-$router->patch('/users/{id}', 'UserController@update'); // update user record
-$router->delete('/users/{id}', 'UserController@delete'); // delete record
+// New Unsecured Routes without /api prefix (new addition)
+$router->group([], function () use ($router) {
+    $router->get('/users', 'UserController@index'); // Get all users (http://localhost:8000/users)
+    $router->get('/users/{id}', 'UserController@show'); // Get user by ID (http://localhost:8000/users/{id})
+    $router->post('/users', 'UserController@add'); // Create a new user
+    $router->put('/users/{id}', 'UserController@update'); // Update user
+    $router->patch('/users/{id}', 'UserController@update'); // Partial user update
+    $router->delete('/users/{id}', 'UserController@delete'); // Delete user
+
+    $router->get('/usersjob', 'UserJobController@index');
+    $router->get('/userjob/{id}', 'UserJobController@show');
+});
