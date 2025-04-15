@@ -6,6 +6,7 @@ use App\Models\User;
 use Dusterio\LumenPassport\LumenPassport;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Passport\Passport;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -37,5 +38,6 @@ class AuthServiceProvider extends ServiceProvider
         //   }
         //});
         LumenPassport::routes($this->app->router);
+        Passport::loadKeysFrom(storage_path('oauth'));
     }
 }
