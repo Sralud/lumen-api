@@ -53,13 +53,15 @@ class UserController extends Controller
 
     $userjob = UserJob::findOrFail($request->jobid);
 
-    // 🔧 MANUAL save
+    $user = User::create($request->all());
+
+    /* 🔧 MANUAL save
     $user = new User;
     $user->username = $request->username;
     $user->password = $request->password;
     $user->gender = $request->gender;
     $user->jobid = $request->jobid;
-    $user->save();
+    $user->save();*/
 
     return $this->successResponse($user, Response::HTTP_CREATED);
 }
